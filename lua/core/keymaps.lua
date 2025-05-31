@@ -3,6 +3,15 @@ vim.g.mapleader = " "
 
 local keymap = vim.keymap
 
+vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
+
+-- Move selected line / block of text in visual mode
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move selected text down" } )
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move selected text up" } )
+
+vim.keymap.set("n", "<C-d>", "<C-d>zz")
+vim.keymap.set("n", "<C-u>", "<C-u>zz")
+
 -- General keymaps
 keymap.set("n", "<leader>wq", ":wq<CR>") -- save and quit
 keymap.set("n", "<leader>qq", ":q!<CR>") -- quit without saving
@@ -121,3 +130,5 @@ keymap.set("n", '<leader>df', '<cmd>Telescope dap frames<cr>')
 keymap.set("n", '<leader>dh', '<cmd>Telescope dap commands<cr>')
 keymap.set("n", '<leader>de', function() require('telescope.builtin').diagnostics({default_text=":E:"}) end)
 
+-- Search
+keymap.set('n', '<ESC>', '<cmd>nohlsearch<CR>')

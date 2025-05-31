@@ -1,91 +1,187 @@
+function ColorMyPencils(color)
+	-- color = color or "rose-pine"
+	color = color or "lake"
+	vim.cmd.colorscheme(color)
+
+	vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+	vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
+	vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+
+end
+
+return {
+    -- {
+    --     "folke/tokyonight.nvim",
+    --     config = function()
+    --         require("tokyonight").setup({
+    --             -- your configuration comes here
+    --             -- or leave it empty to use the default settings
+    --             style = "storm", -- The theme comes in three styles, `storm`, `moon`, a darker variant `night` and `day`
+    --             transparent = true, -- Enable this to disable setting the background color
+    --             terminal_colors = true, -- Configure the colors used when opening a `:terminal` in Neovim
+    --             styles = {
+    --                 -- Style to be applied to different syntax groups
+    --                 -- Value is any valid attr-list value for `:help nvim_set_hl`
+    --                 comments = { italic = false },
+    --                 keywords = { italic = false },
+    --                 -- Background styles. Can be "dark", "transparent" or "normal"
+    --                 sidebars = "dark", -- style for sidebars, see below
+    --                 floats = "dark", -- style for floating windows
+    --             },
+    --         })
+    --     end
+    -- },
+    --
+    -- {
+    --     "rose-pine/neovim",
+    --     name = "rose-pine",
+    --     config = function()
+    --         require('rose-pine').setup({
+    --             disable_background = true,
+    --             styles = {
+    --                 italic = false,
+    --             },
+    --         })
+    --
+    --         vim.cmd("colorscheme rose-pine")
+    --
+    --         ColorMyPencils()
+    --     end
+    -- },
+    -- {
+    --     "catppuccin/nvim",
+    --     name = "catppuccin",
+    --     priority = 1000,
+    --     config = function()
+    --         -- require('catppuccin').setup({
+    --         -- })
+    --
+    --         vim.cmd.colorscheme("catppuccin-macchiato")
+    --
+    --         ColorMyPencils()
+    --     end,
+    -- },
+    -- {
+    --     "EdenEast/nightfox.nvim",
+    --     name = "nightfox",
+    --     config = function()
+    --         vim.cmd.colorscheme('nordfox')
+    --         ColorMyPencils()
+    --     end,
+    -- },
+    {
+        "shaunsingh/nord.nvim",
+        name = "nord",
+        config = function()
+            vim.cmd.colorscheme('nord')
+            vim.g.nord_italic = false
+            vim.g.nord_bold = false
+            vim.g.nord_contrast = true
+            vim.g.nord_enable_sidebar_background = true
+            vim.g.nord_borders = true
+            ColorMyPencils()
+        end,
+    },
+    {
+        "antonk52/lake.nvim",
+        name = "lake",
+        config = function()
+            vim.cmd.colorscheme('lake')
+            -- vim.cmd('color lake')
+            ColorMyPencils()
+        end,
+    }
+}
+
+
 -- Theme/Colorscheme (uncomment section for whichever theme you prefer or use your own)
 -- Kanagawa Theme (Custom Palette)
-return {
-  -- https://github.com/rebelot/kanagawa.nvim
-  'rebelot/kanagawa.nvim', -- You can replace this with your favorite colorscheme
-  lazy = false, -- We want the colorscheme to load immediately when starting Neovim
-  priority = 1000, -- Load the colorscheme before other non-lazy-loaded plugins
-  opts = {
-    -- Replace this with your scheme-specific settings or remove to use the defaults
-    -- transparent = true,
-    background = {
-      -- light = "lotus",
-      dark = "wave", -- "wave, dragon"
-    },
-    colors = {
-      palette = {
-        -- Background colors
-        sumiInk0 = "#161616", -- modified
-        sumiInk1 = "#181818", -- modified
-        sumiInk2 = "#1a1a1a", -- modified
-        sumiInk3 = "#1F1F1F", -- modified
-        sumiInk4 = "#2A2A2A", -- modified
-        sumiInk5 = "#363636", -- modified
-        sumiInk6 = "#545454", -- modified
+-- return {
+--   -- https://github.com/rebelot/kanagawa.nvim
+--   'rebelot/kanagawa.nvim', -- You can replace this with your favorite colorscheme
+--   lazy = false, -- We want the colorscheme to load immediately when starting Neovim
+--   priority = 1000, -- Load the colorscheme before other non-lazy-loaded plugins
+--   opts = {
+--     -- Replace this with your scheme-specific settings or remove to use the defaults
+--     -- transparent = true,
+--     background = {
+--       -- light = "lotus",
+--       dark = "wave", -- "wave, dragon"
+--     },
+--     colors = {
+--       palette = {
+--         -- Background colors
+--         sumiInk0 = "#161616", -- modified
+--         sumiInk1 = "#181818", -- modified
+--         sumiInk2 = "#1a1a1a", -- modified
+--         sumiInk3 = "#1F1F1F", -- modified
+--         sumiInk4 = "#2A2A2A", -- modified
+--         sumiInk5 = "#363636", -- modified
+--         sumiInk6 = "#545454", -- modified
 
-        -- Popup and Floats
-        waveBlue1 = "#322C47", -- modified
-        waveBlue2 = "#4c4464", -- modified
+--         -- Popup and Floats
+--         waveBlue1 = "#322C47", -- modified
+--         waveBlue2 = "#4c4464", -- modified
 
-        -- Diff and Git
-        winterGreen = "#2B3328",
-        winterYellow = "#49443C",
-        winterRed = "#43242B",
-        winterBlue = "#252535",
-        autumnGreen = "#76A56A", -- modified
-        autumnRed = "#C34043",
-        autumnYellow = "#DCA561",
+--         -- Diff and Git
+--         winterGreen = "#2B3328",
+--         winterYellow = "#49443C",
+--         winterRed = "#43242B",
+--         winterBlue = "#252535",
+--         autumnGreen = "#76A56A", -- modified
+--         autumnRed = "#C34043",
+--         autumnYellow = "#DCA561",
 
-        -- Diag
-        samuraiRed = "#E82424",
-        roninYellow = "#FF9E3B",
-        waveAqua1 = "#7E9CD8", -- modified
-        dragonBlue = "#7FB4CA", -- modified
+--         -- Diag
+--         samuraiRed = "#E82424",
+--         roninYellow = "#FF9E3B",
+--         waveAqua1 = "#7E9CD8", -- modified
+--         dragonBlue = "#7FB4CA", -- modified
 
-        -- Foreground and Comments
-        oldWhite = "#C8C093",
-        fujiWhite = "#F9E7C0", -- modified
-        fujiGray = "#727169",
-        oniViolet = "#BFA3E6", -- modified
-        oniViolet2 = "#BCACDB", -- modified
-        crystalBlue = "#8CABFF", -- modified
-        springViolet1 = "#938AA9",
-        springViolet2 = "#9CABCA",
-        springBlue = "#7FC4EF", -- modified
-        waveAqua2 = "#77BBDD", -- modified
+--         -- Foreground and Comments
+--         oldWhite = "#C8C093",
+--         fujiWhite = "#F9E7C0", -- modified
+--         fujiGray = "#727169",
+--         oniViolet = "#BFA3E6", -- modified
+--         oniViolet2 = "#BCACDB", -- modified
+--         crystalBlue = "#8CABFF", -- modified
+--         springViolet1 = "#938AA9",
+--         springViolet2 = "#9CABCA",
+--         springBlue = "#7FC4EF", -- modified
+--         waveAqua2 = "#77BBDD", -- modified
 
-        springGreen = "#98BB6C",
-        boatYellow1 = "#938056",
-        boatYellow2 = "#C0A36E",
-        carpYellow = "#FFEE99", -- modified
+--         springGreen = "#98BB6C",
+--         boatYellow1 = "#938056",
+--         boatYellow2 = "#C0A36E",
+--         carpYellow = "#FFEE99", -- modified
 
-        sakuraPink = "#D27E99",
-        waveRed = "#E46876",
-        peachRed = "#FF5D62",
-        surimiOrange = "#FFAA44", -- modified
-        katanaGray = "#717C7C",
-      },
-    },
-  },
-  config = function(_, opts)
-    require('kanagawa').setup(opts) -- Replace this with your favorite colorscheme
-    vim.cmd("colorscheme kanagawa") -- Replace this with your favorite colorscheme
+--         sakuraPink = "#D27E99",
+--         waveRed = "#E46876",
+--         peachRed = "#FF5D62",
+--         surimiOrange = "#FFAA44", -- modified
+--         katanaGray = "#717C7C",
+--       },
+--     },
+--   },
+--   config = function(_, opts)
+--     require('kanagawa').setup(opts) -- Replace this with your favorite colorscheme
+--     vim.cmd("colorscheme kanagawa") -- Replace this with your favorite colorscheme
 
-    -- Custom diff colors
-    vim.cmd([[
-      autocmd VimEnter * hi DiffAdd guifg=#00FF00 guibg=#005500
-      autocmd VimEnter * hi DiffDelete guifg=#FF0000 guibg=#550000
-      autocmd VimEnter * hi DiffChange guifg=#CCCCCC guibg=#555555
-      autocmd VimEnter * hi DiffText guifg=#00FF00 guibg=#005500
-    ]])
+--     -- Custom diff colors
+--     vim.cmd([[
+--       autocmd VimEnter * hi DiffAdd guifg=#00FF00 guibg=#005500
+--       autocmd VimEnter * hi DiffDelete guifg=#FF0000 guibg=#550000
+--       autocmd VimEnter * hi DiffChange guifg=#CCCCCC guibg=#555555
+--       autocmd VimEnter * hi DiffText guifg=#00FF00 guibg=#005500
+--     ]])
 
-    -- Custom border colors
-    vim.cmd([[
-      autocmd ColorScheme * hi NormalFloat guifg=#F9E7C0 guibg=#1F1F1F
-      autocmd ColorScheme * hi FloatBorder guifg=#F9E7C0 guibg=#1F1F1F
-    ]])
-  end
-}
+--     -- Custom border colors
+--     vim.cmd([[
+--       autocmd ColorScheme * hi NormalFloat guifg=#F9E7C0 guibg=#1F1F1F
+--       autocmd ColorScheme * hi FloatBorder guifg=#F9E7C0 guibg=#1F1F1F
+--     ]])
+--   end
+-- }
 
 -- Kanagawa Theme (Original)
 -- return {
