@@ -11,6 +11,10 @@ return {
     -- https://github.com/williamboman/mason-lspconfig.nvim
     { 'williamboman/mason-lspconfig.nvim' },
 
+    -- Auto-Install LSPs, linters, formatters, debuggers
+    -- https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim
+    { 'WhoIsSethDaniel/mason-tool-installer.nvim' },
+
     -- Useful status updates for LSP
     -- https://github.com/j-hui/fidget.nvim
     { 'j-hui/fidget.nvim', opts = {} },
@@ -24,17 +28,26 @@ return {
     require('mason-lspconfig').setup({
       -- Install these LSPs automatically
       ensure_installed = {
-        -- 'bashls', -- requires npm to be installed
-        -- 'cssls', -- requires npm to be installed
-        -- 'html', -- requires npm to be installed
+        'bashls', -- requires npm to be installed
+        'cssls', -- requires npm to be installed
+        'html', -- requires npm to be installed
         'lua_ls',
-        -- 'jsonls', -- requires npm to be installed
+        'jdtls', -- requires java 21 to be installed
+        'jsonls', -- requires npm to be installed
         'lemminx',
         'marksman',
         'quick_lint_js',
         -- 'tsserver', -- requires npm to be installed
-        -- 'yamlls', -- requires npm to be installed
+        'yamlls', -- requires npm to be installed
       }
+    })
+
+    require('mason-tool-installer').setup({
+      -- Install these linters, formatters, debuggers automatically
+      ensure_installed = {
+        'java-debug-adapter',
+        'java-test',
+      },
     })
 
     local lspconfig = require('lspconfig')
@@ -46,10 +59,13 @@ return {
     -- Call setup on each LSP server
     require('mason-lspconfig').setup_handlers({
       function(server_name)
-        lspconfig[server_name].setup({
-          on_attach = lsp_attach,
-          capabilities = lsp_capabilities,
-        })
+        -- Don't call setup for JDTLS Java LSP because it will be setup from a separate config
+        if server_name ~= 'jdtls' then
+          lspconfig[server_name].setup({
+            on_attach = lsp_attach,
+            capabilities = lsp_capabilities,
+          })
+        end
       end
     })
 
