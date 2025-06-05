@@ -3,7 +3,7 @@ return {
   -- LSP Configuration
   -- https://github.com/neovim/nvim-lspconfig
   'neovim/nvim-lspconfig',
-  event = 'VeryLazy',
+  event = 'BufReadPre', -- Load on very lazy event
   dependencies = {
     -- LSP Management
     -- https://github.com/williamboman/mason.nvim
@@ -30,25 +30,29 @@ return {
       ensure_installed = {
         'bashls', -- requires npm to be installed
         'cssls', -- requires npm to be installed
+        'dockerls',
         'html', -- requires npm to be installed
+        'jsonls',
         'lua_ls',
         'jdtls', -- requires java 21 to be installed
         'jsonls', -- requires npm to be installed
         'lemminx',
         'marksman',
         'quick_lint_js',
+        'sqlls',
         -- 'tsserver', -- requires npm to be installed
         'yamlls', -- requires npm to be installed
-      }
-    })
-
-    require('mason-tool-installer').setup({
-      -- Install these linters, formatters, debuggers automatically
-      ensure_installed = {
-        'java-debug-adapter',
-        'java-test',
       },
     })
+
+    -- Mason can't install these at the moment
+    -- require('mason-tool-installer').setup({
+    --   -- Install these linters, formatters, debuggers automatically
+    --   ensure_installed = {
+    --     'java-debug-adapter',
+    --     'java-test',
+    --   },
+    -- })
 
     local lspconfig = require('lspconfig')
     local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
@@ -58,16 +62,25 @@ return {
 
     -- Call setup on each LSP server
     require('mason-lspconfig').setup_handlers({
+      -- Default handler for all servers except those with a dedicated handler below
       function(server_name)
-        -- Don't call setup for JDTLS Java LSP because it will be setup from a separate config
         if server_name ~= 'jdtls' then
           lspconfig[server_name].setup({
             on_attach = lsp_attach,
             capabilities = lsp_capabilities,
           })
         end
-      end
+      end,
+      -- Dedicated handler for bashls
+      ["bashls"] = function()
+        lspconfig.bashls.setup({
+          on_attach = lsp_attach,
+          capabilities = lsp_capabilities,
+        })
+      end,
     })
+
+    -- lspconfig.bashls.setup{}
 
     -- Lua LSP settings
     lspconfig.lua_ls.setup {
