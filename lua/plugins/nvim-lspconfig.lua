@@ -60,39 +60,33 @@ return {
       -- Create your keybindings here...
     end
 
-    -- Call setup on each LSP server
-    require('mason-lspconfig').setup_handlers({
-      -- Default handler for all servers except those with a dedicated handler below
-      function(server_name)
-        if server_name ~= 'jdtls' then
-          lspconfig[server_name].setup({
-            on_attach = lsp_attach,
-            capabilities = lsp_capabilities,
-          })
-        end
-      end,
-      -- Dedicated handler for bashls
-      ["bashls"] = function()
-        lspconfig.bashls.setup({
+    -- Setup all installed servers automatically
+    local mason_lspconfig = require('mason-lspconfig')
+    local installed_servers = mason_lspconfig.get_installed_servers()
+    
+    for _, server_name in ipairs(installed_servers) do
+      -- Skip jdtls as it's handled separately in ftplugin/java.lua
+      if server_name ~= 'jdtls' then
+        local opts = {
           on_attach = lsp_attach,
           capabilities = lsp_capabilities,
-        })
-      end,
-    })
-
-    -- lspconfig.bashls.setup{}
-
-    -- Lua LSP settings
-    lspconfig.lua_ls.setup {
-      settings = {
-        Lua = {
-          diagnostics = {
-            -- Get the language server to recognize the `vim` global
-            globals = {'vim'},
-          },
-        },
-      },
-    }
+        }
+        
+        -- Add special settings for lua_ls
+        if server_name == 'lua_ls' then
+          opts.settings = {
+            Lua = {
+              diagnostics = {
+                -- Get the language server to recognize the `vim` global
+                globals = {'vim'},
+              },
+            },
+          }
+        end
+        
+        lspconfig[server_name].setup(opts)
+      end
+    end
 
     -- Globally configure all LSP floating preview popups (like hover, signature help, etc)
     local open_floating_preview = vim.lsp.util.open_floating_preview
