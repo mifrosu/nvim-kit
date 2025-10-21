@@ -54,13 +54,12 @@ return {
     --   },
     -- })
 
-    local lspconfig = require('lspconfig')
     local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
     local lsp_attach = function(client, bufnr)
       -- Create your keybindings here...
     end
 
-    -- Setup all installed servers automatically
+    -- Setup all installed servers automatically using the new vim.lsp.config API
     local mason_lspconfig = require('mason-lspconfig')
     local installed_servers = mason_lspconfig.get_installed_servers()
     
@@ -68,7 +67,6 @@ return {
       -- Skip jdtls as it's handled separately in ftplugin/java.lua
       if server_name ~= 'jdtls' then
         local opts = {
-          on_attach = lsp_attach,
           capabilities = lsp_capabilities,
         }
         
@@ -84,9 +82,26 @@ return {
           }
         end
         
-        lspconfig[server_name].setup(opts)
+        -- Use the new vim.lsp.config API for Neovim 0.11+
+        if vim.lsp.config then
+          vim.lsp.config(server_name, opts)
+          vim.lsp.enable(server_name)
+        else
+          -- Fallback to old API for older Neovim versions
+          require('lspconfig')[server_name].setup(opts)
+        end
       end
     end
+    
+    -- Setup on_attach callback for all LSP servers
+    vim.api.nvim_create_autocmd('LspAttach', {
+      callback = function(args)
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
+        if client then
+          lsp_attach(client, args.buf)
+        end
+      end,
+    })
 
     -- Globally configure all LSP floating preview popups (like hover, signature help, etc)
     local open_floating_preview = vim.lsp.util.open_floating_preview
